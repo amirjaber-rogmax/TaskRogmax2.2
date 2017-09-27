@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">TaskRogmax2.2</string>
+    <string name="create_pet">Create pet</string>
+    <string name="create_person">create person</string>
+    <string name="view_pets">view pets</string>
+    <string name="view_people">view people</string>
+    <string name="add_pet">Add Pet</string>
+    <string name="pet_name">Pet Name</string>
+    <string name="pet_sub_type">Pet Sub Type</string>
+    <string name="pet_type">Pet Type</string>
+    <string-array name="type_spinner">
+        <item></item>
+        <item>Cat</item>
+        <item>Dog</item>
+    </string-array>
+</resources>

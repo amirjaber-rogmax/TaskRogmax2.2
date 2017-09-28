@@ -113,7 +113,7 @@ public class CreatePetActivity extends AppCompatActivity {
     }
 
     private void addPet(String type, String subtype, String name) {
-        pets.add(new Pet(type, subtype, name));
+        pets.add(new Pet(0, type, subtype, name));
     }
 
     private class PetListAdapter extends ArrayAdapter<Pet> {

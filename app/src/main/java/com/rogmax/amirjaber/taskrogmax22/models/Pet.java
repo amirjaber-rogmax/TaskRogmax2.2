@@ -7,11 +7,17 @@ package com.rogmax.amirjaber.taskrogmax22.models;
 public class Pet {
 
     private String _type, _subtype, _name;
+    private int _id;
 
-    public Pet (String type, String subtype, String name){
+    public Pet (int id, String type, String subtype, String name){
+        _id = id;
         _type = type;
         _subtype = subtype;
         _name = name;
+    }
+
+    public int getId() {
+        return _id;
     }
 
     public String getType() {

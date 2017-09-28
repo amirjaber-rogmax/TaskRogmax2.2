@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rogmax.amirjaber.taskrogmax22.helpers.DatabaseHelper;
 import com.rogmax.amirjaber.taskrogmax22.models.Pet;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class CreatePetActivity extends AppCompatActivity {
     List<Pet> pets = new ArrayList<Pet>();
     ListView petListView;
     ArrayAdapter<Pet> petAdapter;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +40,16 @@ public class CreatePetActivity extends AppCompatActivity {
         petName = (EditText) findViewById(R.id.et_pet_name);
         spinnerType = (Spinner) findViewById(R.id.type);
         spinnerSub = (Spinner) findViewById(R.id.sub_type);
+        dbHelper = new DatabaseHelper(getApplicationContext());
 
         final Button btnAddPet = (Button) findViewById(R.id.btn_add_pet);
         btnAddPet.setEnabled(false);
         btnAddPet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addPet(String.valueOf(spinnerType.getSelectedItem()), String.valueOf(spinnerSub.getSelectedItem()), String.valueOf(petName.getText()));
+                Pet pet = new Pet(dbHelper.getPetsCount(), String.valueOf(spinnerType.getSelectedItem()), String.valueOf(spinnerSub.getSelectedItem()), String.valueOf(petName.getText()));
+                dbHelper.createPet(pet);
+                pets.add(pet);
                 populatePetList();
                 toastMessage(petName.getText().toString() + " has been created successfully");
 
@@ -104,7 +109,15 @@ public class CreatePetActivity extends AppCompatActivity {
             }
         });
 
+        List<Pet> addablePets = dbHelper.getAllPets();
+        int petCount = dbHelper.getPetsCount();
 
+        for(int i = 0; i < petCount; i++){
+            pets.add(addablePets.get(i));
+        }
+
+        if (!addablePets.isEmpty())
+            populatePetList();
     }
 
     private void populatePetList() {
@@ -112,9 +125,6 @@ public class CreatePetActivity extends AppCompatActivity {
         petListView.setAdapter(petAdapter);
     }
 
-    private void addPet(String type, String subtype, String name) {
-        pets.add(new Pet(0, type, subtype, name));
-    }
 
     private class PetListAdapter extends ArrayAdapter<Pet> {
 

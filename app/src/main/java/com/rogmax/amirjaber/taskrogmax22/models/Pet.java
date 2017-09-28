@@ -14,15 +14,15 @@ public class Pet {
         _name = name;
     }
 
-    public String get_type() {
+    public String getType() {
         return _type;
     }
 
-    public String get_subtype() {
+    public String getSubType() {
         return _subtype;
     }
 
-    public String get_name() {
+    public String getName() {
         return _name;
     }
 }

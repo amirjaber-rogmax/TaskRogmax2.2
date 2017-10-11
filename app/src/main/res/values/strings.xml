@@ -5,9 +5,15 @@
     <string name="view_pets">view pets</string>
     <string name="view_people">view people</string>
     <string name="add_pet">Add Pet</string>
+    <string name="edit_pet">Edit Pet</string>
+    <string name="cancel">Cancel</string>
     <string name="pet_name">Pet Name</string>
     <string name="pet_sub_type">Pet Sub Type</string>
     <string name="pet_type">Pet Type</string>
+    <string name="choose_pet">Choose Pet:</string>
+    <string name="name">name</string>
+    <string name="age">age</string>
+    <string name="add_user">Add user</string>
     <string-array name="type_spinner">
         <item></item>
         <item>Cat</item>

@@ -9,7 +9,7 @@ public class Pet {
     private String _type, _subtype, _name;
     private int _id;
 
-    public Pet (int id, String type, String subtype, String name){
+    public Pet(int id, String type, String subtype, String name) {
         _id = id;
         _type = type;
         _subtype = subtype;
@@ -31,4 +31,23 @@ public class Pet {
     public String getName() {
         return _name;
     }
+
+
+    public void set_type(String newType) {
+        this._type = newType;
+    }
+
+    public void set_subtype(String newSubtype) {
+        this._subtype = newSubtype;
+    }
+
+    public void set_name(String newName) {
+        this._name = newName;
+    }
+
+    @Override
+    public String toString() {
+        return this._name;
+    }
+
 }

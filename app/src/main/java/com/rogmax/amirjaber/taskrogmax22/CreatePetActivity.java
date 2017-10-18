@@ -24,6 +24,7 @@ import android.R.layout;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.rogmax.amirjaber.taskrogmax22.helpers.DatabaseHelper;
+import com.rogmax.amirjaber.taskrogmax22.models.Person;
 import com.rogmax.amirjaber.taskrogmax22.models.Pet;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class CreatePetActivity extends AppCompatActivity {
     DatabaseHelper dbHelper;
     ArrayAdapter<Pet> petAdapter;
 
+    // Getter for pet list
     public static List<Pet> getPets() {
         return pets;
     }
@@ -52,10 +54,8 @@ public class CreatePetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_pet);
-
         /* Stetho */
         Stetho.initializeWithDefaults(this);
-
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
@@ -92,11 +92,12 @@ public class CreatePetActivity extends AppCompatActivity {
 
         // Set a listener to each view in the list
         registerForContextMenu(petListView);
-        petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        petListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 clickedItemIndex = position;
                 Log.d(LOG, "onItemClick: You have clicked on item number " + clickedItemIndex);
+                return false;
             }
         });
 
@@ -132,13 +133,9 @@ public class CreatePetActivity extends AppCompatActivity {
                 String type = (String) parent.getItemAtPosition(position);
 
                 if ("".equals(type)) {
-                    spinnerSub.setEnabled(false);
-                    btnAddPet.setEnabled(false);
-                    petName.setEnabled(false);
+                    caseNothing();
                 } else {
-                    spinnerSub.setEnabled(true);
-                    btnAddPet.setEnabled(true);
-                    petName.setEnabled(true);
+                    caseSomething();
                 }
 
                 if ("Cat".equals(type)) {
@@ -153,6 +150,16 @@ public class CreatePetActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+            private void caseNothing(){
+                spinnerSub.setEnabled(false);
+                btnAddPet.setEnabled(false);
+                petName.setEnabled(false);
+            }
+            private void caseSomething(){
+                spinnerSub.setEnabled(true);
+                btnAddPet.setEnabled(true);
+                petName.setEnabled(true);
+            }
         });
 
         // Populate list if pets in database are not 0
@@ -161,6 +168,8 @@ public class CreatePetActivity extends AppCompatActivity {
             getPets().addAll(dbHelper.getAllPets());
         }
         populatePetList();
+
+
     }
 
 
@@ -184,7 +193,7 @@ public class CreatePetActivity extends AppCompatActivity {
             TextView type = view.findViewById(R.id.petType);
             type.setText(currentPet.getType());
             TextView subType = view.findViewById(R.id.petSubType);
-            subType.setText(currentPet.getSubType());
+            subType.setText(currentPet.getSubtype());
 
             return view;
 
@@ -209,15 +218,13 @@ public class CreatePetActivity extends AppCompatActivity {
 
     // Check if pet already exists in the list
     private boolean petExists(Pet pet) {
-        String name = pet.getName();
-        int petCount = getPets().size();
-
-        for (int i = 0; i < petCount; i++) {
-            if (name.compareToIgnoreCase(getPets().get(i).getName()) == 0)
+        for (Pet p : getPets()){
+            if(pet.getName().equalsIgnoreCase(p.getName())){
                 return true;
+            }
         }
-
         return false;
+
     }
 
     // Add context menu items

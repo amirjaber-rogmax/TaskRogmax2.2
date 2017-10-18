@@ -15,8 +15,7 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseHelper dbHelper;
-    SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -48,7 +48,7 @@ public class EditPetActivity extends AppCompatActivity {
         final ArrayAdapter<String> catAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, chooseColors("Cat"));
         final ArrayAdapter<String> dogAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, chooseColors("Dog"));
         spinnerSub.setAdapter(catAdapter);
-        spinnerSub.setSelection(catAdapter.getPosition(pet.getSubType()));
+        spinnerSub.setSelection(catAdapter.getPosition(pet.getSubtype()));
 
         // Set a listener to first spinner and populate second spinner
         spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -58,19 +58,26 @@ public class EditPetActivity extends AppCompatActivity {
                 if ("".equals(type)) {
                     spinnerSub.setEnabled(false);
                 } else if ("Cat".equals(type)) {
-                    spinnerSub.setEnabled(true);
-                    spinnerSub.setAdapter(catAdapter);
-                    spinnerSub.setSelection(catAdapter.getPosition(pet.getSubType()));
+                    petCat();
                 } else if ("Dog".equals(type)) {
-                    spinnerSub.setEnabled(true);
-                    spinnerSub.setAdapter(dogAdapter);
-                    spinnerSub.setSelection(dogAdapter.getPosition(pet.getSubType()));
+                    petDog();
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+
+            private void petCat(){
+                spinnerSub.setEnabled(true);
+                spinnerSub.setAdapter(catAdapter);
+                spinnerSub.setSelection(catAdapter.getPosition(pet.getSubtype()));
+            }
+            private void petDog(){
+                spinnerSub.setEnabled(true);
+                spinnerSub.setAdapter(dogAdapter);
+                spinnerSub.setSelection(dogAdapter.getPosition(pet.getSubtype()));
             }
         });
 
@@ -79,9 +86,9 @@ public class EditPetActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pet.set_name(String.valueOf(petName.getText()));
-                pet.set_type(String.valueOf(spinnerType.getSelectedItem()));
-                pet.set_subtype(String.valueOf(spinnerSub.getSelectedItem()));
+                pet.setName(String.valueOf(petName.getText()));
+                pet.setType(String.valueOf(spinnerType.getSelectedItem()));
+                pet.setSubtype(String.valueOf(spinnerSub.getSelectedItem()));
 
                 dbHelper.updatePet(pet);
 
@@ -94,7 +101,7 @@ public class EditPetActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cancel = new Intent(EditPetActivity.this, CreatePetActivity.class);
+                Intent cancel = new Intent(EditPetActivity.this, MainActivity.class);
                 startActivity(cancel);
             }
         });
@@ -107,5 +114,7 @@ public class EditPetActivity extends AppCompatActivity {
         }
         return dogColors;
     }
+
+
 
 }

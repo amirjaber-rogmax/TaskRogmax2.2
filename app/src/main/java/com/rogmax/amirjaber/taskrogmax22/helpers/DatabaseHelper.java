@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.rogmax.amirjaber.taskrogmax22.models.Person;
+import com.rogmax.amirjaber.taskrogmax22.models.PersonView;
 import com.rogmax.amirjaber.taskrogmax22.models.Pet;
 
 import java.util.ArrayList;
@@ -89,29 +90,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(KEY_TYPE, pet.getType());
-        values.put(KEY_SUB_TYPE, pet.getSubType());
+        values.put(KEY_SUB_TYPE, pet.getSubtype());
         values.put(KEY_PET_NAME, pet.getName());
 
 
-        Log.d(LOG, "createPet: Adding " + pet.getType() + " with property " + pet.getSubType() + " called " + pet.getName() + " to database " + TABLE_PETS);
+        Log.d(LOG, "createPet: Adding " + pet.getType() + " with property " + pet.getSubtype() + " called " + pet.getName() + " to database " + TABLE_PETS);
 
         db.insert(TABLE_PETS, null, values);
         db.close();
     }
 
-//    public Pet getPet(int id) {
-//        SQLiteDatabase db = getReadableDatabase();
-//        Cursor cursor = db.query(TABLE_PETS, new String[]{KEY_ID, KEY_TYPE, KEY_SUB_TYPE, KEY_PET_NAME}, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
-//
-//        if (cursor != null)
-//            cursor.moveToFirst();
-//
-//        assert cursor != null;
-//        Pet pet = new Pet(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3));
-//        db.close();
-//        cursor.close();
-//        return pet;
-//    }
+
 
     public void deletePet(Pet pet) {
         SQLiteDatabase db = getWritableDatabase();
@@ -137,7 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(KEY_TYPE, pet.getType());
-        values.put(KEY_SUB_TYPE, pet.getSubType());
+        values.put(KEY_SUB_TYPE, pet.getSubtype());
         values.put(KEY_PET_NAME, pet.getName());
 
         int rowsAffected = db.update(TABLE_PETS, values, KEY_ID + "=?", new String[]{String.valueOf(pet.getId())});
@@ -162,20 +151,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return pets;
     }
 
-//    public List<String> getAllSimplePets() {
-//        ArrayList<String> petList = new ArrayList<>();
-//        SQLiteDatabase db = getReadableDatabase();
-//        String selectQuery = "SELECT * FROM " + TABLE_PETS;
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//        if (cursor.getCount() > 0) {
-//            while (cursor.moveToNext()) {
-//                String pName = cursor.getString(cursor.getColumnIndex("name"));
-//                petList.add(pName);
-//            }
-//        }
-//        db.close();
-//        return petList;
-//    }
 
 
     //#############################TABLE PERSON METHODS#############################//
@@ -185,14 +160,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(KEY_PERSON_NAME, person.get_name());
-        values.put(KEY_AGE, person.get_age());
-        values.put(KEY_PET_NAME, person.get_pet());
-        values.put(KEY_PET_ID, person.get_petId());
+        values.put(KEY_PERSON_NAME, person.getName());
+        values.put(KEY_AGE, person.getAge());
+        values.put(KEY_PET_NAME, person.getPet());
+        values.put(KEY_PET_ID, person.getPetId());
 
-        Log.d(LOG, "createPerson: Adding " + person.get_name() + " age " + person.get_age() + " with pet " + person.get_pet() + " to database " + TABLE_PEOPLE + " with id " + KEY_PET_ID);
+        Log.d(LOG, "createPerson: Adding " + person.getName() + " age " + person.getAge() + " with pet " + person.getPet() + " to database " + TABLE_PEOPLE + " with id " + KEY_PET_ID);
 
         db.insert(TABLE_PEOPLE, null, values);
+        db.close();
+    }
+
+    public void deletePerson(PersonView p) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.delete(TABLE_PEOPLE, KEY_ID + "=?", new String[]{String.valueOf(p.getId())});
         db.close();
     }
 
@@ -206,25 +188,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-//    public List<Person> getAllPeople() {
-//        List<Person> people = new ArrayList<>();
-//
-//        String selectQuery = "SELECT * FROM " + TABLE_PETS +
-//                " INNER JOIN " + TABLE_PEOPLE +
-//                " ON " + TABLE_PEOPLE + "." + KEY_PET_ID + " = " + TABLE_PETS + "." + KEY_ID;
-//
-//        SQLiteDatabase db = getReadableDatabase();
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                people.add(new Person(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4)));
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        db.close();
-//        return people;
-//    }
+    public List<PersonView> getAllPeople() {
+        List<PersonView> people = new ArrayList<>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_PETS +
+                " INNER JOIN " + TABLE_PEOPLE +
+                " ON " + TABLE_PEOPLE + "." + KEY_PET_ID + " = " + TABLE_PETS + "." + KEY_ID;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                people.add(new PersonView(Integer.parseInt(cursor.getString(4)), cursor.getString(5), cursor.getString(6), cursor.getString(7)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return people;
+    }
 
 
     public Pet findPetByName(String petName) {

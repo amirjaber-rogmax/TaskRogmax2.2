@@ -6,48 +6,51 @@ package com.rogmax.amirjaber.taskrogmax22.models;
 
 public class Pet {
 
-    private String _type, _subtype, _name;
-    private int _id;
+    private String type, subtype, name;
+    private int id;
 
     public Pet(int id, String type, String subtype, String name) {
-        _id = id;
-        _type = type;
-        _subtype = subtype;
-        _name = name;
-    }
-
-    public int getId() {
-        return _id;
+        this.id = id;
+        this.type = type;
+        this.subtype = subtype;
+        this.name = name;
     }
 
     public String getType() {
-        return _type;
+        return type;
     }
 
-    public String getSubType() {
-        return _subtype;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
-
-    public void set_type(String newType) {
-        this._type = newType;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void set_subtype(String newSubtype) {
-        this._subtype = newSubtype;
+    public int getId() {
+        return id;
     }
 
-    public void set_name(String newName) {
-        this._name = newName;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return this._name;
+        return this.name;
     }
 
 }

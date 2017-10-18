@@ -14,6 +14,8 @@
     <string name="name">name</string>
     <string name="age">age</string>
     <string name="add_user">Add user</string>
+    <string name="person_age">Person Age</string>
+    <string name="person_name">Person Name</string>
     <string-array name="type_spinner">
         <item></item>
         <item>Cat</item>

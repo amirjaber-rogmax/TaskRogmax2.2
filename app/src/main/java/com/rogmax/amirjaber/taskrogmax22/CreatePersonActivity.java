@@ -24,11 +24,9 @@ import okhttp3.OkHttpClient;
 
 public class CreatePersonActivity extends AppCompatActivity {
 
-    private static final String LOG = "CreatePerson";
-    private static List<Person> people = new ArrayList<>();
-
-    public static List<Person> getPeople() {
-        return people;
+    private static List<Person> persons = new ArrayList<>();
+    public static List<Person> getPersons() {
+        return persons;
     }
 
 
@@ -41,13 +39,13 @@ public class CreatePersonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_person);
-
         /* Stetho */
         Stetho.initializeWithDefaults(this);
 
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
+
 
         // Initialise all items
         personName = (EditText) findViewById(R.id.et_name);
@@ -87,7 +85,7 @@ public class CreatePersonActivity extends AppCompatActivity {
                         String.valueOf(personAge.getText()), String.valueOf(spinnerPet.getSelectedItem()), selectedPet.getId());
                 if (!personExists(person)) {
                     dbHelper.createPerson(person);
-                    getPeople().add(person);
+                    getPersons().add(person);
                     toastMessage(String.valueOf(personName.getText().toString()) + " has been created successfully");
 
                     return;
@@ -99,8 +97,10 @@ public class CreatePersonActivity extends AppCompatActivity {
 
         // Spinner data
         loadSpinnerData();
+
     }
 
+    // Load spinner array from database
     public void loadSpinnerData() {
 
         ArrayAdapter spinnerAdapter;
@@ -113,15 +113,13 @@ public class CreatePersonActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
+    // Check if the person already exists
     private boolean personExists(Person person) {
-        String name = person.get_name();
-        int personCount = getPeople().size();
-
-        for (int i = 0; i < personCount; i++) {
-            if (name.compareToIgnoreCase(getPeople().get(i).get_name()) == 0)
+        for (Person p : getPersons()) {
+            if (person.getName().equalsIgnoreCase(p.getName())) {
                 return true;
+            }
         }
-
         return false;
     }
 
